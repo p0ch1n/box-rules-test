@@ -29,6 +29,15 @@ class PortType(str, Enum):
     AnnotatedStream = "AnnotatedStream"
     """Stream of AnnotatedFrames — each frame carries an image plus its BBoxes."""
 
+    ReferenceImageStream = "ReferenceImageStream"
+    """Static reference images that do not change frame-to-frame.
+
+    Used for configuration-time images such as template-matching references or
+    background models. A node that outputs this type is a *self-seeding* source:
+    it declares no input ports and loads its data from its own config on first
+    execute(). The scheduler will NOT inject pipeline input into such nodes.
+    """
+
 
 @dataclass(frozen=True)
 class PortDefinition:

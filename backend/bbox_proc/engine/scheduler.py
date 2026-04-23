@@ -84,10 +84,14 @@ class Scheduler:
         # port_data[node_id][port_name] = value
         port_data: Dict[str, Dict[str, Any]] = defaultdict(dict)
 
-        # Seed source nodes based on their declared input port type
+        # Seed source nodes based on their declared input port type.
+        # Nodes with no input_ports are self-seeding (e.g. ReferenceImageStream
+        # loader nodes): they receive {} and return their own data from config.
         for node_id, deg in self._in_degree.items():
             if deg == 0:
                 node = self._nodes[node_id]
+                if not node.input_ports:
+                    continue
                 is_image_source = any(
                     p.port_type == PortType.ImageStream for p in node.input_ports
                 )

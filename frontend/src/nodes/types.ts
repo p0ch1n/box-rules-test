@@ -17,13 +17,35 @@ export enum PortType {
   ImageStream = 'ImageStream',
   /** Image frames paired with their BBoxes — output of DetectionNode / ImageAnalysisNode */
   AnnotatedStream = 'AnnotatedStream',
+  /**
+   * Static reference images that do not change frame-to-frame.
+   * Used for template matching references, background models, etc.
+   * A node that outputs this type declares no input ports (self-seeding).
+   */
+  ReferenceImageStream = 'ReferenceImageStream',
+}
+
+/**
+ * Canonical handle colors for each PortType.
+ * Always reference this map in node components — do not hardcode color strings.
+ *
+ * @example
+ * <Handle style={{ background: PORT_TYPE_COLORS[PortType.BoxStream] }} />
+ */
+export const PORT_TYPE_COLORS: Record<PortType, string> = {
+  [PortType.BoxStream]: '#3b82f6',           // blue
+  [PortType.Collection]: '#f59e0b',          // amber
+  [PortType.LogicSignal]: '#22c55e',         // green
+  [PortType.ImageStream]: '#7c3aed',         // purple
+  [PortType.AnnotatedStream]: '#f97316',     // orange
+  [PortType.ReferenceImageStream]: '#e11d48', // rose
 }
 
 /**
  * Connection rules.
  * BoxStream → Collection is allowed so that a single-stream node (FilterNode,
  * RelationNode, …) can feed directly into a LogicNode without a Merge step.
- * ImageStream and AnnotatedStream are self-contained and cannot cross-connect.
+ * All image-carrying types are self-contained and cannot cross-connect.
  */
 export const PORT_TYPE_COMPATIBILITY: Record<PortType, PortType[]> = {
   [PortType.BoxStream]: [PortType.BoxStream, PortType.Collection],
@@ -31,6 +53,7 @@ export const PORT_TYPE_COMPATIBILITY: Record<PortType, PortType[]> = {
   [PortType.LogicSignal]: [PortType.LogicSignal],
   [PortType.ImageStream]: [PortType.ImageStream],
   [PortType.AnnotatedStream]: [PortType.AnnotatedStream],
+  [PortType.ReferenceImageStream]: [PortType.ReferenceImageStream],
 }
 
 // ------------------------------------------------------------------ //

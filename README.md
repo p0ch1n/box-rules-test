@@ -1,11 +1,11 @@
-# bbox-proc-rules
+# rule-engine
 
 Real-time bounding box processing pipeline — visual editor (React + Vite) + Python execution engine.
 
 ## Architecture
 
 ```
-bbox-proc-rules/
+rule-engine/
 ├── frontend/   # React 18 + Vite + React-Flow canvas editor
 ├── backend/    # Python 3.9+ execution engine (pure library)
 ├── schema/     # Shared JSON Schema (Draft-07)

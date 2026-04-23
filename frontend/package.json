@@ -1,5 +1,5 @@
 {
-  "name": "bbox-proc-frontend",
+  "name": "rule-engine-frontend",
   "private": true,
   "version": "0.1.0",
   "type": "module",

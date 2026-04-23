@@ -1,8 +1,8 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://bbox-proc-rules/schema/pipeline.schema.json",
+  "$id": "https://rule-engine/schema/pipeline.schema.json",
   "title": "Pipeline Configuration",
-  "description": "JSON Schema for bbox-proc-rules pipeline DAG configuration",
+  "description": "JSON Schema for rule-engine pipeline DAG configuration",
   "type": "object",
   "required": ["version", "metadata", "nodes", "edges"],
   "additionalProperties": false,

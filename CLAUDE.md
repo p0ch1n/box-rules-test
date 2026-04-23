@@ -2,6 +2,15 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Test Status
+
+| Layer | Tests | Coverage | Build |
+|-------|-------|----------|-------|
+| Backend | 102/102 pass | 88% | — |
+| Frontend | — | — | ✓ (103 kB gz) |
+
+TypeScript: clean. ESLint: zero warnings. Model-loading paths (rf_detr, yolov12) are excluded from meaningful coverage as they require real GPU weights.
+
 ## Commands
 
 ### Backend
@@ -32,7 +41,7 @@ npm run lint        # eslint (zero warnings policy)
 Two independent layers communicate only through the shared JSON schema at `schema/pipeline.schema.json` (JSON Schema Draft-07).
 
 ```
-bbox-proc-rules/
+rule-engine/
 ├── frontend/   # React 18 + Vite + ReactFlow canvas editor
 ├── backend/    # Python 3.9+ execution engine (pure library)
 └── schema/     # pipeline.schema.json — shared contract
@@ -105,12 +114,28 @@ bbox-proc-rules/
 
 ### Port Type Compatibility
 
-| Source → Target | BoxStream | Collection | LogicSignal |
-|---|---|---|---|
-| BoxStream | ✓ | ✓ | — |
-| Collection | — | ✓ | — |
-| LogicSignal | — | — | ✓ |
+| Source → Target | BoxStream | Collection | LogicSignal | ImageStream | AnnotatedStream | ReferenceImageStream |
+|---|---|---|---|---|---|---|
+| BoxStream | ✓ | ✓ | — | — | — | — |
+| Collection | — | ✓ | — | — | — | — |
+| LogicSignal | — | — | ✓ | — | — | — |
+| ImageStream | — | — | — | ✓ | — | — |
+| AnnotatedStream | — | — | — | — | ✓ | — |
+| ReferenceImageStream | — | — | — | — | — | ✓ |
 
 Source nodes (FilterNode, RelationNode): `BoxStream → BoxStream`  
 MergeNode: `N × BoxStream → Collection`  
 LogicNode: `BoxStream or Collection → LogicSignal`
+
+**`ReferenceImageStream`** — static config-time images (template matching references, background models). Nodes that output this type declare **no input ports** (self-seeding); the scheduler does NOT inject pipeline data into them. See `docs/developer-guide.md §5.2`.
+
+**Port colors** — defined in `frontend/src/nodes/types.ts:PORT_TYPE_COLORS`. Always import from there; do not hardcode hex strings in node components.
+
+## Developer Guide
+
+See **`docs/developer-guide.md`** for:
+- Full port type reference with colors and compatibility rules
+- Step-by-step instructions for adding backend + frontend nodes
+- Self-seeding source node pattern (ReferenceImageStream)
+- Template matching end-to-end example
+- Testing requirements and checklist
