@@ -11,6 +11,7 @@ from rule_execution_engine.nodes.input_node import InputNode
 from rule_execution_engine.nodes.logic_node import LogicNode
 from rule_execution_engine.nodes.merge_node import MergeNode
 from rule_execution_engine.nodes.relation_node import RelationNode
+from rule_execution_engine.nodes.vlm_node import VLMNode
 
 __all__ = [
     "BaseNode",
@@ -24,4 +25,5 @@ __all__ = [
     "LogicNode",
     "MergeNode",
     "RelationNode",
+    "VLMNode",
 ]
